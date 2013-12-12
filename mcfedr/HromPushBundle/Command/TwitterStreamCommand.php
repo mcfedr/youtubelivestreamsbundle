@@ -61,7 +61,7 @@ class TwitterStreamCommand extends Command {
         while (!$stream->feof()) {
             // Read a line from the stream
             $line = $stream->readLine();
-            if($line == '') {
+            if(trim($line) == '') {
                 continue;
             }
             $data = json_decode($line, true);
