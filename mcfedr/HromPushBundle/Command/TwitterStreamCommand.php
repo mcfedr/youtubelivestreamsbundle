@@ -83,5 +83,7 @@ class TwitterStreamCommand extends Command {
                 ]);
             }
         }
+
+        $this->logger->info('Stream finished');
     }
 }
