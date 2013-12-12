@@ -1,17 +1,51 @@
 <?php
 namespace mcfedr\HromPushBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Guzzle\Http\Client;
-use ekreative\AWSPushBundle\Message\Message;
-use ekreative\AWSPushBundle\Service\Messages;
 use Guzzle\Stream\PhpStreamRequestFactory;
+use mcfedr\HromPushBundle\Service\Store;
+use mcfedr\HromPushBundle\Service\TweetPusher;
 
-class TwitterStreamCommand extends ContainerAwareCommand {
+class TwitterStreamCommand extends Command {
+
+    /**
+     * @var Client
+     */
+    private $client;
+
+    /**
+     * @var Store
+     */
+    private $store;
+
+    /**
+     * @var TweetPusher
+     */
+    private $pusher;
+
+    /**
+     * @var string
+     */
+    private $userid;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct($client, $store, $pusher, $userid, $logger) {
+        parent::__construct();
+
+        $this->client = $client;
+        $this->store = $store;
+        $this->pusher = $pusher;
+        $this->userid = $userid;
+        $this->logger = $logger;
+    }
 
     protected function configure() {
         $this
@@ -21,8 +55,8 @@ class TwitterStreamCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $request = $this->getTwitterStreamClient()->post('statuses/filter.json', null, array(
-            'follow' => $this->getContainer()->getParameter('mcfedr_hrom_push.userid') . ',40682763'
+        $request = $this->client->post('statuses/filter.json', null, array(
+            'follow' => $this->userid
         ));
 
         $factory = new PhpStreamRequestFactory();
@@ -36,31 +70,25 @@ class TwitterStreamCommand extends ContainerAwareCommand {
                 continue;
             }
             $data = json_decode($line, true);
-            if($data['text']) {
-                $this->pushTweet($data);
+            if(isset($data['text'])) {
+                try {
+                    $this->pusher->pushTweet($data);
+                    $this->logger->info('Sent tweet', [
+                        'TweetId' => $data['id']
+                    ]);
+                }
+                catch(\Exception $e) {
+                    $this->logger->error("Failed to push", [
+                        'TweetId' => $data['id'],
+                        'Exception' => $e
+                    ]);
+                }
+            }
+            else {
+                $this->logger->debug('Other message', [
+                    'message' => $data
+                ]);
             }
         }
-    }
-
-    private function pushTweet($tweet) {
-        $m = new Message($tweet['text']);
-        $m->setCustom([
-            'text' => $tweet['text']
-        ]);
-        $this->getPushMessages()->broadcast($m);
-    }
-
-    /**
-     * @return Client
-     */
-    private function getTwitterStreamClient() {
-        return $this->getContainer()->get('twitter_stream_client');
-    }
-
-    /**
-     * @return Messages
-     */
-    private function getPushMessages() {
-        return $this->getContainer()->get('pushMessages');
     }
 }

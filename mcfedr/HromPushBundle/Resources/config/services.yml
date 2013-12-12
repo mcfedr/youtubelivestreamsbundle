@@ -3,27 +3,30 @@ parameters:
     mcfedr_hrom_push.twitter.consumer_secret: ''
     mcfedr_hrom_push.twitter.token: ''
     mcfedr_hrom_push.twitter.token_secret: ''
+    mcfedr_hrom_push.store: ''
+    mcfedr_hrom_push.username: ''
+    mcfedr_hrom_push.userid: ''
 
 services:
-    twitter_client:
+    mcfedr_hrom_push.twitter_client:
         class: Guzzle\Http\Client
         arguments:
           - "https://api.twitter.com/{version}"
           -
             version: "1.1"
         calls:
-          - [addSubscriber, ["@twitter_oauth"]]
+          - [addSubscriber, ["@mcfedr_hrom_push.twitter_oauth"]]
 
-    twitter_stream_client:
+    mcfedr_hrom_push.twitter_stream_client:
             class: Guzzle\Http\Client
             arguments:
               - "https://stream.twitter.com/{version}"
               -
                 version: "1.1"
             calls:
-              - [addSubscriber, ["@twitter_oauth"]]
+              - [addSubscriber, ["@mcfedr_hrom_push.twitter_oauth"]]
 
-    twitter_oauth:
+    mcfedr_hrom_push.twitter_oauth:
         class: Guzzle\Plugin\Oauth\OauthPlugin
         arguments:
           -
@@ -31,3 +34,34 @@ services:
             consumer_secret: "%mcfedr_hrom_push.twitter.consumer_secret%"
             token: "%mcfedr_hrom_push.twitter.token%"
             token_secret: "%mcfedr_hrom_push.twitter.token_secret%"
+    mcfedr_hrom_push.store:
+        class: mcfedr\HromPushBundle\Service\Store
+        arguments:
+          - "%mcfedr_hrom_push.store%"
+
+    mcfedr_hrom_push.command.fetch:
+            class: mcfedr\HromPushBundle\Command\TwitterFetchCommand
+            arguments:
+              - "@mcfedr_hrom_push.twitter_client"
+              - "@mcfedr_hrom_push.store"
+              - "@mcfedr_hrom_push.pusher"
+              - "%mcfedr_hrom_push.username%"
+              - "@logger"
+            tags:
+                -  { name: console.command }
+
+    mcfedr_hrom_push.command.stream:
+                class: mcfedr\HromPushBundle\Command\TwitterStreamCommand
+                arguments:
+                  - "@mcfedr_hrom_push.twitter_stream_client"
+                  - "@mcfedr_hrom_push.store"
+                  - "@mcfedr_hrom_push.pusher"
+                  - "%mcfedr_hrom_push.userid%"
+                  - "@logger"
+                tags:
+                    -  { name: console.command }
+
+    mcfedr_hrom_push.pusher:
+                    class: mcfedr\HromPushBundle\Service\TweetPusher
+                    arguments:
+                      - "@mcfedr_aws_push.messages"

@@ -3,6 +3,7 @@
 namespace mcfedr\HromPushBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -37,6 +38,6 @@ class DeviceController extends Controller {
      * @return Devices
      */
     private function getPushDevices() {
-        return $this->get('pushDevices');
+        return $this->get('push_devices');
     }
 }
