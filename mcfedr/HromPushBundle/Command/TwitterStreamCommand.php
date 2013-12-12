@@ -48,6 +48,8 @@ class TwitterStreamCommand extends Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->logger->info('Opening twitter stream');
+
         $request = $this->client->post('statuses/filter.json', null, array(
             'follow' => $this->userid
         ));
