@@ -1,0 +1,33 @@
+parameters:
+    mcfedr_hrom_push.twitter.consumer_key: ''
+    mcfedr_hrom_push.twitter.consumer_secret: ''
+    mcfedr_hrom_push.twitter.token: ''
+    mcfedr_hrom_push.twitter.token_secret: ''
+
+services:
+    twitter_client:
+        class: Guzzle\Http\Client
+        arguments:
+          - "https://api.twitter.com/{version}"
+          -
+            version: "1.1"
+        calls:
+          - [addSubscriber, ["@twitter_oauth"]]
+
+    twitter_stream_client:
+            class: Guzzle\Http\Client
+            arguments:
+              - "https://stream.twitter.com/{version}"
+              -
+                version: "1.1"
+            calls:
+              - [addSubscriber, ["@twitter_oauth"]]
+
+    twitter_oauth:
+        class: Guzzle\Plugin\Oauth\OauthPlugin
+        arguments:
+          -
+            consumer_key: "%mcfedr_hrom_push.twitter.consumer_key%"
+            consumer_secret: "%mcfedr_hrom_push.twitter.consumer_secret%"
+            token: "%mcfedr_hrom_push.twitter.token%"
+            token_secret: "%mcfedr_hrom_push.twitter.token_secret%"
