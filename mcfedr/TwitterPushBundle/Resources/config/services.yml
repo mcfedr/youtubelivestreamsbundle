@@ -1,0 +1,40 @@
+parameters:
+    mcfedr_twitter_push.twitter.consumer_key: ''
+    mcfedr_twitter_push.twitter.consumer_secret: ''
+    mcfedr_twitter_push.twitter.token: ''
+    mcfedr_twitter_push.twitter.token_secret: ''
+    mcfedr_twitter_push.username: ''
+
+services:
+    mcfedr_twitter_push.twitter_stream_client:
+            class: Guzzle\Http\Client
+            arguments:
+              - "https://stream.twitter.com/{version}"
+              -
+                version: "1.1"
+            calls:
+              - [addSubscriber, ["@mcfedr_twitter_push.twitter_oauth"]]
+
+    mcfedr_twitter_push.twitter_oauth:
+        class: Guzzle\Plugin\Oauth\OauthPlugin
+        arguments:
+          -
+            consumer_key: "%mcfedr_twitter_push.twitter.consumer_key%"
+            consumer_secret: "%mcfedr_twitter_push.twitter.consumer_secret%"
+            token: "%mcfedr_twitter_push.twitter.token%"
+            token_secret: "%mcfedr_twitter_push.twitter.token_secret%"
+
+    mcfedr_twitter_push.command.stream:
+                class: mcfedr\TwitterPushBundle\Command\TwitterStreamCommand
+                arguments:
+                  - "@mcfedr_twitter_push.twitter_stream_client"
+                  - "@mcfedr_twitter_push.pusher"
+                  - "%mcfedr_twitter_push.userid%"
+                  - "@logger"
+                tags:
+                    -  { name: console.command }
+
+    mcfedr_twitter_push.pusher:
+                    class: mcfedr\TwitterPushBundle\Service\TweetPusher
+                    arguments:
+                      - "@mcfedr_aws_push.messages"

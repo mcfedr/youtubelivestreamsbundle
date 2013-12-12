@@ -1,5 +1,5 @@
 <?php
-namespace mcfedr\HromPushBundle\Command;
+namespace mcfedr\TwitterPushBundle\Command;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Guzzle\Http\Client;
 use Guzzle\Stream\PhpStreamRequestFactory;
-use mcfedr\HromPushBundle\Service\TweetPusher;
+use mcfedr\TwitterPushBundle\Service\TweetPusher;
 
 class TwitterStreamCommand extends Command {
 
@@ -42,8 +42,8 @@ class TwitterStreamCommand extends Command {
 
     protected function configure() {
         $this
-            ->setName('hrom:twitter:stream')
-            ->setDescription('Check for new tweets from hrom using a stream')
+            ->setName('mcfedr:twitter:stream')
+            ->setDescription('Check for new tweets using a stream and push them')
         ;
     }
 

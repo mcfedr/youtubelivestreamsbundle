@@ -1,6 +1,6 @@
-<?php
+1<?php
 
-namespace mcfedr\HromPushBundle\Controller;
+namespace mcfedr\TwitterPushBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

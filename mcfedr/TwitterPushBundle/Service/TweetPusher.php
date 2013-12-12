@@ -1,5 +1,5 @@
 <?php
-namespace mcfedr\HromPushBundle\Service;
+namespace mcfedr\TwitterPushBundle\Service;
 
 use mcfedr\AWSPushBundle\Message\Message;
 

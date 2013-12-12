@@ -1,6 +1,6 @@
 <?php
 
-namespace mcfedr\HromPushBundle\DependencyInjection;
+namespace mcfedr\TwitterPushBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class mcfedrHromPushExtension extends Extension
+class mcfedrTwitterPushExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -25,10 +25,10 @@ class mcfedrHromPushExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('mcfedr_hrom_push.twitter.consumer_key', $config['twitter']['consumer_key']);
-        $container->setParameter('mcfedr_hrom_push.twitter.consumer_secret', $config['twitter']['consumer_secret']);
-        $container->setParameter('mcfedr_hrom_push.twitter.token', $config['twitter']['token']);
-        $container->setParameter('mcfedr_hrom_push.twitter.token_secret', $config['twitter']['token_secret']);
-        $container->setParameter('mcfedr_hrom_push.userid', $config['userid']);
+        $container->setParameter('mcfedr_twitter_push.twitter.consumer_key', $config['twitter']['consumer_key']);
+        $container->setParameter('mcfedr_twitter_push.twitter.consumer_secret', $config['twitter']['consumer_secret']);
+        $container->setParameter('mcfedr_twitter_push.twitter.token', $config['twitter']['token']);
+        $container->setParameter('mcfedr_twitter_push.twitter.token_secret', $config['twitter']['token_secret']);
+        $container->setParameter('mcfedr_twitter_push.userid', $config['userid']);
     }
 }
