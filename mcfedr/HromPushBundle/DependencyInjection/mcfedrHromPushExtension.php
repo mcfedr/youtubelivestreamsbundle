@@ -25,12 +25,10 @@ class mcfedrHromPushExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('mcfedr_hrom_push.username', $config['username']);
-        $container->setParameter('mcfedr_hrom_push.userid', $config['userid']);
-        $container->setParameter('mcfedr_hrom_push.store', $config['store']);
         $container->setParameter('mcfedr_hrom_push.twitter.consumer_key', $config['twitter']['consumer_key']);
         $container->setParameter('mcfedr_hrom_push.twitter.consumer_secret', $config['twitter']['consumer_secret']);
         $container->setParameter('mcfedr_hrom_push.twitter.token', $config['twitter']['token']);
         $container->setParameter('mcfedr_hrom_push.twitter.token_secret', $config['twitter']['token_secret']);
+        $container->setParameter('mcfedr_hrom_push.userid', $config['userid']);
     }
 }

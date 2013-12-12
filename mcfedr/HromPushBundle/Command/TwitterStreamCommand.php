@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Guzzle\Http\Client;
 use Guzzle\Stream\PhpStreamRequestFactory;
-use mcfedr\HromPushBundle\Service\Store;
 use mcfedr\HromPushBundle\Service\TweetPusher;
 
 class TwitterStreamCommand extends Command {
@@ -16,11 +15,6 @@ class TwitterStreamCommand extends Command {
      * @var Client
      */
     private $client;
-
-    /**
-     * @var Store
-     */
-    private $store;
 
     /**
      * @var TweetPusher
@@ -37,11 +31,10 @@ class TwitterStreamCommand extends Command {
      */
     private $logger;
 
-    public function __construct($client, $store, $pusher, $userid, $logger) {
+    public function __construct($client, $pusher, $userid, $logger) {
         parent::__construct();
 
         $this->client = $client;
-        $this->store = $store;
         $this->pusher = $pusher;
         $this->userid = $userid;
         $this->logger = $logger;

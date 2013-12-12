@@ -28,9 +28,7 @@ class Configuration implements ConfigurationInterface
                         scalarNode("token_secret")->end()->
                     end()->
                 end()->
-                scalarNode("username")->isRequired()->cannotBeEmpty()->end()->
                 scalarNode("userid")->isRequired()->cannotBeEmpty()->end()->
-                scalarNode("store")->isRequired()->cannotBeEmpty()->end()->
             end()->
         end();
 
