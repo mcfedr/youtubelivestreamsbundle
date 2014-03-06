@@ -20,7 +20,7 @@ You need to also load the AWSPushBundle
     {
         $bundles = array(
             ...
-            new new mcfedr\YouTube\LiveStreamsBundle\mcfedrYouTubeLiveStreamsBundle(),
+            new mcfedr\YouTube\LiveStreamsBundle\mcfedrYouTubeLiveStreamsBundle(),
 
 ### Routing
 
