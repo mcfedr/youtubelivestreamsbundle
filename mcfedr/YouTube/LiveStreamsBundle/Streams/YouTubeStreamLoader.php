@@ -107,7 +107,7 @@ class YouTubeStreamLoader
             function ($video) {
                 return [
                     'name' => $video['snippet']['title'],
-                    'thumb' => $video['snippet']['thumbnails']['high'],
+                    'thumb' => $video['snippet']['thumbnails']['high']['url'],
                     'videoId' => $video['id']['videoId']
                 ];
             },

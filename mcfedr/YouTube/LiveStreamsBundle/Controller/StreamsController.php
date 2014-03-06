@@ -13,6 +13,6 @@ class StreamsController extends Controller
      */
     public function indexAction()
     {
-        return new JsonResponse($this->get('mcfedr_you_tube_live_streams.loader')->getStreams());
+        return new JsonResponse(['streams' => $this->get('mcfedr_you_tube_live_streams.loader')->getStreams()]);
     }
 }
