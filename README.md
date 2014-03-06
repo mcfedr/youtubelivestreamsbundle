@@ -41,6 +41,11 @@ This is sample configuration, to add to your config.yml
         channel_id: id of the channel
         cache_timeout: 3600 #cache for an hour
 
+You might want to put something like this in your config_dev.yml
+
+    mcfedr_you_tube_live_streams:
+        cache_timeout: 0
+
 ## Usage
 
 You get get your list of streams

@@ -59,7 +59,7 @@ class YouTubeStreamLoader
     public function getStreams()
     {
         $file = $this->getCacheFile();
-        if (file_exists($file)) {
+        if ($this->cacheTimeout > 0 && file_exists($file)) {
             $this->logger->debug(
                 'Reading cached streams',
                 [
@@ -114,7 +114,9 @@ class YouTubeStreamLoader
             $youTubeData['items']
         );
 
-        $this->cacheStreams($streams);
+        if ($this->cacheTimeout > 0) {
+            $this->cacheStreams($streams);
+        }
 
         return $streams;
     }
