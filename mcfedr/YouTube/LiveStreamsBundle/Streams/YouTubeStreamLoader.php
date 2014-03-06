@@ -10,9 +10,6 @@ use Psr\Log\LoggerInterface;
 
 class YouTubeStreamLoader
 {
-    //1 Hour in seconds
-    const CACHE_TIMEOUT = 3600;
-
     /**
      * @var \Guzzle\Http\Client
      */
@@ -34,17 +31,24 @@ class YouTubeStreamLoader
     protected $logger;
 
     /**
+     * @var int
+     */
+    protected $cacheTimeout;
+
+    /**
      * @param Client $client
      * @param string $channelId
      * @param string $cacheDir
      * @param \Psr\Log\LoggerInterface $logger
+     * @param int $cacheTimeout
      */
-    public function __construct(Client $client, $channelId, $cacheDir, LoggerInterface $logger)
+    public function __construct(Client $client, $channelId, $cacheDir, LoggerInterface $logger, $cacheTimeout)
     {
         $this->client = $client;
         $this->channelId = $channelId;
         $this->cacheDir = $cacheDir;
         $this->logger = $logger;
+        $this->cacheTimeout = $cacheTimeout;
     }
 
     /**
@@ -63,7 +67,7 @@ class YouTubeStreamLoader
                 ]
             );
             if (($streamsJson = file_get_contents($file)) && $streamsData = json_decode($streamsJson, true)) {
-                if (time() - strtotime($streamsData['date']) < static::CACHE_TIMEOUT) {
+                if (time() - strtotime($streamsData['date']) < $this->cacheTimeout) {
                     return $streamsData['streams'];
                 }
 

@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode("api_key")->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode("channel_id")->isRequired()->cannotBeEmpty()->end()
+                ->integerNode("cache_timeout")->min(0)->end()
             ->end()
         ->end();
 
