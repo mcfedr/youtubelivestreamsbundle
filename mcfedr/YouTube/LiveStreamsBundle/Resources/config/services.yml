@@ -1,19 +1,23 @@
 services:
-    mcfedr_you_tube_live_streams.streams:
-        class: Guzzle\Http\Message\Response
-        factory_class: Guzzle\Http\StaticClient
-        factory_method: get
+    mcfedr_you_tube_live_streams.loader:
+        class: mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamLoader
         arguments:
-            - "https://www.googleapis.com/youtube/v3/search"
+            - "@mcfedr_you_tube_live_streams.youtube_client"
+            - "%mcfedr_you_tube_live_streams.channel_id%"
+            - "%kernel.cache_dir%"
+            - "@logger"
+
+    mcfedr_you_tube_live_streams.youtube_client:
+        class: Guzzle\Http\Client
+        arguments:
+            - "https://www.googleapis.com/youtube/{version}/"
             -
-                plugins:
-                    - "@mcfedr_you_tube_live_streams.youtube_log_plugin"
-                query:
-                    key: "%mcfedr_you_tube_live_streams.api_key%"
-                    part: "snippet"
-                    channelId: "%mcfedr_you_tube_live_streams.channel_id%"
-                    eventType: "live"
-                    type: "video"
+                version: "v3"
+                request.options:
+                    query:
+                        key: "%mcfedr_you_tube_live_streams.api_key%"
+        calls:
+            - [addSubscriber, ["@mcfedr_you_tube_live_streams.youtube_log_plugin"]]
 
     mcfedr_you_tube_live_streams.youtube_log_adapter:
         class: Guzzle\Log\PsrLogAdapter
