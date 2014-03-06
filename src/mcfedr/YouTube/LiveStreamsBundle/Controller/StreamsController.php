@@ -11,7 +11,7 @@ class StreamsController extends Controller
     /**
      * @Route("/streams")
      */
-    public function indexAction()
+    public function streamsAction()
     {
         return new JsonResponse(['streams' => $this->get('mcfedr_you_tube_live_streams.loader')->getStreams()]);
     }
