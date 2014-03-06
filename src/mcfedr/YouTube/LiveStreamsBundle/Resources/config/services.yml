@@ -31,4 +31,6 @@ services:
 
     mcfedr_you_tube_live_streams.youtube_log_plugin:
         class: Guzzle\Plugin\Log\LogPlugin
-        arguments: ["@mcfedr_you_tube_live_streams.youtube_log_adapter", ">>>>>>>>\n{request}\n<<<<<<<<\n{response}\n--------\n{curl_stderr}"]
+        arguments:
+            - "@mcfedr_you_tube_live_streams.youtube_log_adapter"
+            - "mcfedr_you_tube_live_streams Guzzle Request\n{request}\nResponse\n{response}\n\n{curl_stderr}"
