@@ -88,30 +88,59 @@ class YouTubeStreamLoader
             }
         }
 
-        $response = $this->client->get(
+        $searchResponse = $this->client->get(
             'search',
             [],
             [
                 'query' => [
-                    'part' => 'snippet',
+                    'part' => 'id',
                     'channelId' => $this->channelId,
                     'eventType' => 'live',
-                    'type' => 'video'
+                    'type' => 'video',
+                    'maxResults' => 50
                 ]
             ]
         )->send();
 
-        $youTubeData = json_decode($response->getBody(true), true);
+        $searchData = json_decode($searchResponse->getBody(true), true);
+
+        $videosResponse = $this->client->get(
+            'videos',
+            [],
+            [
+                'query' => [
+                    'part' => 'id,snippet,liveStreamingDetails',
+                    'id' => implode(
+                        ',',
+                        array_map(
+                            function ($video) {
+                                return $video['id']['videoId'];
+                            },
+                            $searchData['items']
+                        )
+                    )
+                ]
+            ]
+        )->send();
+
+        $videosData = json_decode($videosResponse->getBody(true), true);
 
         $streams = array_map(
             function ($video) {
                 return [
                     'name' => $video['snippet']['title'],
                     'thumb' => $video['snippet']['thumbnails']['high']['url'],
-                    'videoId' => $video['id']['videoId']
+                    'videoId' => $video['id']
                 ];
             },
-            $youTubeData['items']
+            array_values(
+                array_filter(
+                    $videosData['items'],
+                    function ($video) {
+                        return isset($video['liveStreamingDetails']['actualEndTime']);
+                    }
+                )
+            )
         );
 
         if ($this->cacheTimeout > 0) {
