@@ -137,7 +137,7 @@ class YouTubeStreamLoader
                 array_filter(
                     $videosData['items'],
                     function ($video) {
-                        return isset($video['liveStreamingDetails']['actualEndTime']);
+                        return !isset($video['liveStreamingDetails']['actualEndTime']);
                     }
                 )
             )
