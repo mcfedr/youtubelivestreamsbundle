@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('mcfedr_you_tube_live_streams')
             ->children()
                 ->scalarNode("api_key")->isRequired()->cannotBeEmpty()->end()
-                ->scalarNode("channel_id")->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode("channel_id")->cannotBeEmpty()->end()
                 ->integerNode("cache_timeout")->min(0)->end()
             ->end()
         ->end();

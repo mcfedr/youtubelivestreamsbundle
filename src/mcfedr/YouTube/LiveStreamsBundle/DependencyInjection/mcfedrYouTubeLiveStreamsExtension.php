@@ -25,8 +25,10 @@ class mcfedrYouTubeLiveStreamsExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('mcfedr_you_tube_live_streams.channel_id', $config['channel_id']);
         $container->setParameter('mcfedr_you_tube_live_streams.api_key', $config['api_key']);
+        if (isset($config['channel_id'])) {
+            $container->setParameter('mcfedr_you_tube_live_streams.channel_id', $config['channel_id']);
+        }
         if (isset($config['cache_timeout'])) {
             $container->setParameter('mcfedr_you_tube_live_streams.cache_timeout', $config['cache_timeout']);
         }
