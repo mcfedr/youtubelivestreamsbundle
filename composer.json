@@ -1,5 +1,6 @@
 {
     "name": "mcfedr/youtubelivestreamsbundle",
+    "type": "symfony-bundle",
     "description": "A bundle for fetching a list of live streams",
     "keywords": ["youtube", "livestreams"],
     "require": {
