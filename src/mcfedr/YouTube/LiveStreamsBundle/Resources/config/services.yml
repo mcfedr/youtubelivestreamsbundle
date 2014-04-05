@@ -1,18 +1,8 @@
 parameters:
     mcfedr_you_tube_live_streams.api_key: ''
     mcfedr_you_tube_live_streams.channel_id: ~
-    mcfedr_you_tube_live_streams.cache_timeout: 3600
 
 services:
-    mcfedr_you_tube_live_streams.loader:
-        class: mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader
-        arguments:
-            - "@mcfedr_you_tube_live_streams.youtube_client"
-            - "@logger"
-            - "%mcfedr_you_tube_live_streams.channel_id%"
-            - "@mcfedr_you_tube_live_streams.cache"
-            - "%mcfedr_you_tube_live_streams.cache_timeout%"
-
     mcfedr_you_tube_live_streams.command.streams:
         class: mcfedr\YouTube\LiveStreamsBundle\Command\YouTubeStreamsCommand
         arguments:
@@ -43,6 +33,3 @@ services:
             - "@mcfedr_you_tube_live_streams.youtube_log_adapter"
             - "mcfedr_you_tube_live_streams Guzzle Request\n{request}\nResponse\n{response}\n\n{curl_stderr}"
 
-    mcfedr_you_tube_live_streams.cache:
-        class: Doctrine\Common\Cache\FilesystemCache
-        arguments: ["%kernel.cache_dir%/mcfedr_you_tube_live_streams"]

@@ -4,6 +4,8 @@ namespace mcfedr\YouTube\LiveStreamsBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -29,8 +31,28 @@ class mcfedrYouTubeLiveStreamsExtension extends Extension
         if (isset($config['channel_id'])) {
             $container->setParameter('mcfedr_you_tube_live_streams.channel_id', $config['channel_id']);
         }
-        if (isset($config['cache_timeout'])) {
-            $container->setParameter('mcfedr_you_tube_live_streams.cache_timeout', $config['cache_timeout']);
+
+        if (isset($config['cache'])) {
+            $cacheName = $config['cache'];
+        } else {
+            $cacheName = 'mcfedr_you_tube_live_streams.cache';
+            $container->setDefinition(
+                $cacheName,
+                new Definition('Doctrine\Common\Cache\FilesystemCache', [
+                    "%kernel.cache_dir%/mcfedr_you_tube_live_streams"
+                ])
+            );
         }
+
+        $container->setDefinition(
+            'mcfedr_you_tube_live_streams.loader',
+            new Definition('mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader', [
+                new Reference('mcfedr_you_tube_live_streams.youtube_client'),
+                new Reference('logger'),
+                $container->getParameter('mcfedr_you_tube_live_streams.channel_id'),
+                new Reference($cacheName),
+                isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600
+            ])
+        );
     }
 }
