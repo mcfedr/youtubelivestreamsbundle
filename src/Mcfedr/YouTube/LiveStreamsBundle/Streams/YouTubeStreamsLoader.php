@@ -9,7 +9,6 @@ use Doctrine\Common\Cache\Cache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Mcfedr\YouTube\LiveStreamsBundle\Exception\MissingChannelIdException;
-use Psr\Log\LoggerInterface;
 
 class YouTubeStreamsLoader
 {

@@ -32,26 +32,19 @@ class McfedrYouTubeLiveStreamsExtension extends Extension
             $container->setParameter('mcfedr_you_tube_live_streams.channel_id', $config['channel_id']);
         }
 
+        $args = [
+            new Reference('mcfedr_you_tube_live_streams.youtube_client'),
+            $container->getParameter('mcfedr_you_tube_live_streams.channel_id')
+        ];
+
         if (isset($config['cache'])) {
-            $cacheName = $config['cache'];
-        } else {
-            $cacheName = 'mcfedr_you_tube_live_streams.cache';
-            $container->setDefinition(
-                $cacheName,
-                new Definition('Doctrine\Common\Cache\FilesystemCache', [
-                    "%kernel.cache_dir%/mcfedr_you_tube_live_streams"
-                ])
-            );
+            $args[] = new Reference($config['cache']);
+            $args[] = isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600;
         }
 
         $container->setDefinition(
             'mcfedr_you_tube_live_streams.loader',
-            new Definition('Mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader', [
-                new Reference('mcfedr_you_tube_live_streams.youtube_client'),
-                $container->getParameter('mcfedr_you_tube_live_streams.channel_id'),
-                new Reference($cacheName),
-                isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600
-            ])
+            new Definition('Mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader', $args)
         );
     }
 }
