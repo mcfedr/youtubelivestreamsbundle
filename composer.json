@@ -6,8 +6,10 @@
     "require": {
         "php": ">=5.4.0",
         "symfony/symfony": "~2.3",
-        "guzzle/guzzle": "~3.7",
-        "doctrine/cache": "1.3"
+        "guzzlehttp/guzzle": "~5.0",
+        "doctrine/cache": "1.3",
+        "guzzlehttp/log-subscriber": "~1.0",
+        "sensio/framework-extra-bundle": "~3.0"
     },
     "license": "MIT",
     "authors": [
@@ -18,6 +20,33 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-0": { "mcfedr\\YouTube\\LiveStreamsBundle": "src/" }
+        "psr-4": { "Mcfedr\\YouTube\\LiveStreamsBundle\\": "src/Mcfedr/YouTube/LiveStreamsBundle" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Mcfedr\\YouTube\\LiveStreamsBundle\\": "test/Mcfedr/YouTube/LiveStreamsBundle" }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.3",
+        "theseer/phpdox": "~0.7",
+        "phploc/phploc": "~2.0",
+        "pdepend/pdepend": "~2.0",
+        "phpmd/phpmd": "~2.1",
+        "squizlabs/php_codesniffer": "~1.5",
+        "sebastian/phpcpd": "~2.0",
+        "symfony/monolog-bundle": "~2.6",
+        "incenteev/composer-parameter-handler": "~2.1"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ]
+    },
+    "extra": {
+        "incenteev-parameters": {
+            "file": "tests/parameters.yml"
+        }
     }
 }

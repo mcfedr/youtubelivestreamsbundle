@@ -1,6 +1,6 @@
 <?php
 
-namespace mcfedr\YouTube\LiveStreamsBundle\DependencyInjection;
+namespace Mcfedr\YouTube\LiveStreamsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

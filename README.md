@@ -20,14 +20,14 @@ You need to also load the AWSPushBundle
     {
         $bundles = array(
             ...
-            new mcfedr\YouTube\LiveStreamsBundle\mcfedrYouTubeLiveStreamsBundle(),
+            new Mcfedr\YouTube\LiveStreamsBundle\McfedrYouTubeLiveStreamsBundle(),
 
 ### Routing
 
 Setup the controllers in your routing.yml
 
     mcfedr_you_tube_live_streams:
-        resource: "@mcfedrYouTubeLiveStreamsBundle/Controller/"
+        resource: "@McfedrYouTubeLiveStreamsBundle/Controller/"
         type:     annotation
         prefix:   /
 

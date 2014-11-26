@@ -1,0 +1,4 @@
+mcfedr_you_tube_live_streams:
+    resource: "@McfedrYouTubeLiveStreamsBundle/Controller/"
+    type:     annotation
+    prefix:   /

@@ -3,9 +3,9 @@
  * Created by mcfedr on 15/03/2014 23:56
  */
 
-namespace mcfedr\YouTube\LiveStreamsBundle\Command;
+namespace Mcfedr\YouTube\LiveStreamsBundle\Command;
 
-use mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader;
+use Mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class YouTubeStreamsCommand extends Command
 {
     /**
-     * @var \mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader
+     * @var \Mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader
      */
     protected $loader;
 
@@ -52,4 +52,4 @@ class YouTubeStreamsCommand extends Command
             ->setRows(array_map('array_values', $streams));
         $table->render($output);
     }
-} 
+}

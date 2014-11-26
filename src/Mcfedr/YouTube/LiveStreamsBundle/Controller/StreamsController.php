@@ -1,6 +1,6 @@
 <?php
 
-namespace mcfedr\YouTube\LiveStreamsBundle\Controller;
+namespace Mcfedr\YouTube\LiveStreamsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

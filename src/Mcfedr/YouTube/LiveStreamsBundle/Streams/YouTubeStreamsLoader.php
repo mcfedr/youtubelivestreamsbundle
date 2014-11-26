@@ -3,24 +3,20 @@
  * Created by mcfedr on 06/03/2014 20:19
  */
 
-namespace mcfedr\YouTube\LiveStreamsBundle\Streams;
+namespace Mcfedr\YouTube\LiveStreamsBundle\Streams;
 
 use Doctrine\Common\Cache\Cache;
-use Guzzle\Http\Client;
-use mcfedr\YouTube\LiveStreamsBundle\Exception\MissingChannelIdException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use Mcfedr\YouTube\LiveStreamsBundle\Exception\MissingChannelIdException;
 use Psr\Log\LoggerInterface;
 
 class YouTubeStreamsLoader
 {
     /**
-     * @var \Guzzle\Http\Client
+     * @var Client
      */
     protected $client;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
 
     /**
      * @var string
@@ -39,16 +35,14 @@ class YouTubeStreamsLoader
 
     /**
      * @param Client $client
-     * @param \Psr\Log\LoggerInterface $logger
      * @param string $channelId
      * @param Cache $cache
      * @param int $cacheTimeout
      */
-    public function __construct(Client $client, LoggerInterface $logger, $channelId = null, Cache $cache = null, $cacheTimeout = 0)
+    public function __construct(Client $client, $channelId = null, Cache $cache = null, $cacheTimeout = 0)
     {
         $this->client = $client;
         $this->channelId = $channelId;
-        $this->logger = $logger;
         $this->cache = $cache;
         $this->cacheTimeout = $cacheTimeout;
     }
@@ -57,7 +51,7 @@ class YouTubeStreamsLoader
      * Get the list of videos from YouTube
      *
      * @param string $channelId
-     * @throws \mcfedr\YouTube\LiveStreamsBundle\Exception\MissingChannelIdException
+     * @throws \Mcfedr\YouTube\LiveStreamsBundle\Exception\MissingChannelIdException
      * @return array
      */
     public function getStreams($channelId = null)
@@ -77,9 +71,9 @@ class YouTubeStreamsLoader
             }
         }
 
+        /** @var Response $searchResponse */
         $searchResponse = $this->client->get(
             'search',
-            [],
             [
                 'query' => [
                     'part' => 'id',
@@ -89,13 +83,13 @@ class YouTubeStreamsLoader
                     'maxResults' => 50
                 ]
             ]
-        )->send();
+        );
 
-        $searchData = json_decode($searchResponse->getBody(true), true);
+        $searchData = $searchResponse->json();
 
+        /** @var Response $videosResponse */
         $videosResponse = $this->client->get(
             'videos',
-            [],
             [
                 'query' => [
                     'part' => 'id,snippet,liveStreamingDetails',
@@ -110,9 +104,9 @@ class YouTubeStreamsLoader
                     )
                 ]
             ]
-        )->send();
+        );
 
-        $videosData = json_decode($videosResponse->getBody(true), true);
+        $videosData = $videosResponse->json();
 
         $streams = array_map(
             function ($video) {

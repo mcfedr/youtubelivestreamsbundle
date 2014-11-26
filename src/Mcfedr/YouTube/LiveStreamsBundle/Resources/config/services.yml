@@ -1,0 +1,33 @@
+parameters:
+    mcfedr_you_tube_live_streams.api_key: ''
+    mcfedr_you_tube_live_streams.channel_id: ~
+
+services:
+    mcfedr_you_tube_live_streams.command.streams:
+        class: Mcfedr\YouTube\LiveStreamsBundle\Command\YouTubeStreamsCommand
+        arguments:
+            - "@mcfedr_you_tube_live_streams.loader"
+            - "%mcfedr_you_tube_live_streams.channel_id%"
+        tags:
+            -  { name: console.command }
+
+    mcfedr_you_tube_live_streams.youtube_client:
+        class: GuzzleHttp\Client
+        factory_class: Mcfedr\YouTube\LiveStreamsBundle\DependencyInjection\GuzzleClientFactory
+        factory_method: get
+        arguments:
+            -
+                base_url:
+                    - "https://www.googleapis.com/youtube/{version}/"
+                    -
+                        version: "v3"
+                defaults:
+                    query:
+                        key: "%mcfedr_you_tube_live_streams.api_key%"
+            -
+                - "@mcfedr_you_tube_live_streams.youtube_log_subscriber"
+
+    mcfedr_you_tube_live_streams.youtube_log_subscriber:
+        class: GuzzleHttp\Subscriber\Log\LogSubscriber
+        arguments:
+            - @logger

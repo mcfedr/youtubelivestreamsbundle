@@ -1,6 +1,6 @@
 <?php
 
-namespace mcfedr\YouTube\LiveStreamsBundle\DependencyInjection;
+namespace Mcfedr\YouTube\LiveStreamsBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class mcfedrYouTubeLiveStreamsExtension extends Extension
+class McfedrYouTubeLiveStreamsExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -46,9 +46,8 @@ class mcfedrYouTubeLiveStreamsExtension extends Extension
 
         $container->setDefinition(
             'mcfedr_you_tube_live_streams.loader',
-            new Definition('mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader', [
+            new Definition('Mcfedr\YouTube\LiveStreamsBundle\Streams\YouTubeStreamsLoader', [
                 new Reference('mcfedr_you_tube_live_streams.youtube_client'),
-                new Reference('logger'),
                 $container->getParameter('mcfedr_you_tube_live_streams.channel_id'),
                 new Reference($cacheName),
                 isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600

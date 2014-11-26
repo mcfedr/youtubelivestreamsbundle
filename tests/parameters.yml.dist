@@ -1,0 +1,4 @@
+parameters:
+    mcfedr_youtube_api_key: key
+    mcfedr_youtube_channel_id: channelid
+    mcfedr_youtube_cache_timeout: 3600

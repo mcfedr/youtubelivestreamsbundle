@@ -1,0 +1,42 @@
+imports:
+    - { resource: parameters.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    router:
+        resource: "%kernel.root_dir%/routing.yml"
+        strict_requirements: ~
+    validation:      { enable_annotations: true }
+    secret: 'fake_secret'
+    form: ~
+
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+    providers:
+        in_memory:
+            memory:
+                users:
+                    admin: { password: password, roles: 'ROLE_MCFEDR_AWS_BROADCAST' }
+    firewalls:
+        default:
+            pattern: ^/
+            anonymous: ~
+            http_basic: ~
+
+monolog:
+    handlers:
+        main:
+            type: console
+
+mcfedr_you_tube_live_streams:
+    api_key: "%mcfedr_youtube_api_key%"
+    channel_id: "%mcfedr_youtube_channel_id%"
+    cache: "test.cache"
+    cache_timeout: "%mcfedr_youtube_cache_timeout%"
+
+services:
+    test.cache:
+        class: Doctrine\Common\Cache\ArrayCache
