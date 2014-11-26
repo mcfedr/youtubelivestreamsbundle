@@ -135,6 +135,6 @@ class YouTubeStreamsLoader
 
     protected function getCacheKey($channelId)
     {
-        return "'mcfedr_you_tube_live_streams.$channelId";
+        return "mcfedr_you_tube_live_streams.$channelId";
     }
 }
