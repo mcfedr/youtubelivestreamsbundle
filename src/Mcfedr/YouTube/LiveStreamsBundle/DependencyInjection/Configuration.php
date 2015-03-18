@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('mcfedr_you_tube_live_streams')
+        $treeBuilder->root('mcfedr_you_tube_live_streams')
             ->children()
                 ->scalarNode("api_key")->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode("channel_id")->cannotBeEmpty()->end()
