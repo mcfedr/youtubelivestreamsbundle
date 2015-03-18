@@ -5,6 +5,7 @@ A bundle for sending tweets as push notifications
 [![Latest Stable Version](https://poser.pugx.org/mcfedr/youtubelivestreamsbundle/v/stable.png)](https://packagist.org/packages/mcfedr/youtubelivestreamsbundle)
 [![License](https://poser.pugx.org/mcfedr/youtubelivestreamsbundle/license.png)](https://packagist.org/packages/mcfedr/youtubelivestreamsbundle)
 [![Build Status](https://travis-ci.org/mcfedr/youtubelivestreamsbundle.svg?branch=master)](https://travis-ci.org/mcfedr/youtubelivestreamsbundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/22b72cc8-cd47-4784-8e6a-76c7cddbbe0d/mini.png)](https://insight.sensiolabs.com/projects/22b72cc8-cd47-4784-8e6a-76c7cddbbe0d)
 
 ## Install
 
