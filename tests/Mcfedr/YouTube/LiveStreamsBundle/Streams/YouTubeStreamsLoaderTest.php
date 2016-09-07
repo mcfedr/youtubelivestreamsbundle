@@ -6,19 +6,21 @@
 namespace Mcfedr\YouTube\LiveStreamsBundle\Streams;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Subscriber\Mock;
+use GuzzleHttp\Psr7\Response;
 
 class YouTubeStreamsLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetStreams()
     {
-        $client = new Client();
+        $responses = $this->getResponses();
 
-        $mock = new Mock($this->getResponses());
-
-        $client->getEmitter()->attach($mock);
+        $client = $this->getMockBuilder(Client::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+        $client->expects($this->exactly(count($responses)))
+            ->method('get')
+            ->willReturnOnConsecutiveCalls(...$responses);
 
         $loader = new YouTubeStreamsLoader($client, 'UC2oGvjIJwxn1KeZR3JtE-uQ');
         $json = $loader->getStreams();
@@ -36,7 +38,7 @@ class YouTubeStreamsLoaderTest extends \PHPUnit_Framework_TestCase
 
     private function getResponses() {
         return [
-            new Response(200, ['content-type' => 'application/json; charset=UTF-8'], Stream::factory(<<<RESPONSE
+            new Response(200, ['content-type' => 'application/json; charset=UTF-8'], \GuzzleHttp\Psr7\stream_for(<<<RESPONSE
 {
     "kind": "youtube#searchListResponse",
     "etag": "\"SXtVtkiDWqZpl4dTpZv5nFU7t-8/lYDDt-qOMHuMscxPrY7JL4FLBZo\"",
@@ -58,7 +60,7 @@ class YouTubeStreamsLoaderTest extends \PHPUnit_Framework_TestCase
 
 RESPONSE
             )),
-            new Response(200, ['content-type' => 'application/json; charset=UTF-8'], Stream::factory(<<<RESPONSE
+            new Response(200, ['content-type' => 'application/json; charset=UTF-8'], \GuzzleHttp\Psr7\stream_for(<<<RESPONSE
 {
     "kind": "youtube#videoListResponse",
     "etag": "\"SXtVtkiDWqZpl4dTpZv5nFU7t-8/G3khJbCuWU63t6JknnbRxuDItNg\"",
@@ -116,7 +118,7 @@ RESPONSE
     ]
 }
 RESPONSE
-            )),
+            ))
         ];
     }
 }

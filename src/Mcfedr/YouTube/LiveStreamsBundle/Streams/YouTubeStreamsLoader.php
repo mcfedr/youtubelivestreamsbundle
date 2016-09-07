@@ -7,7 +7,6 @@ namespace Mcfedr\YouTube\LiveStreamsBundle\Streams;
 
 use Doctrine\Common\Cache\Cache;
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
 use Mcfedr\YouTube\LiveStreamsBundle\Exception\MissingChannelIdException;
 
 class YouTubeStreamsLoader
@@ -70,7 +69,6 @@ class YouTubeStreamsLoader
             }
         }
 
-        /** @var Response $searchResponse */
         $searchResponse = $this->client->get(
             'search',
             [
@@ -84,9 +82,8 @@ class YouTubeStreamsLoader
             ]
         );
 
-        $searchData = $searchResponse->json();
+        $searchData = json_decode($searchResponse->getBody()->getContents(), true);
 
-        /** @var Response $videosResponse */
         $videosResponse = $this->client->get(
             'videos',
             [
@@ -105,7 +102,7 @@ class YouTubeStreamsLoader
             ]
         );
 
-        $videosData = $videosResponse->json();
+        $videosData = json_decode($videosResponse->getBody()->getContents(), true);
 
         $streams = array_map(
             function ($video) {

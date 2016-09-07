@@ -17,6 +17,8 @@ class StreamsController extends Controller
      */
     public function streamsAction()
     {
-        return new JsonResponse(['streams' => $this->get('mcfedr_you_tube_live_streams.loader')->getStreams()]);
+        return $this->json([
+            'streams' => $this->get('mcfedr_you_tube_live_streams.loader')->getStreams()
+        ]);
     }
 }
